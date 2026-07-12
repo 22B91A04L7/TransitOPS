@@ -8,8 +8,9 @@ import {
   Paper,
   Typography,
 } from '@mui/material'
+import { MaintenanceActions } from './MaintenanceActions'
 
-export const MaintenanceTable = ({ maintenance }) => {
+export const MaintenanceTable = ({ maintenance, onEdit, onDelete, onStatusChange, loading }) => {
   if (!maintenance || maintenance.length === 0) {
     return (
       <Paper sx={{ p: 3, textAlign: 'center' }}>
@@ -29,6 +30,7 @@ export const MaintenanceTable = ({ maintenance }) => {
             <TableCell>Priority</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Scheduled Date</TableCell>
+            <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -40,6 +42,15 @@ export const MaintenanceTable = ({ maintenance }) => {
               <TableCell>{record.priority}</TableCell>
               <TableCell>{record.status}</TableCell>
               <TableCell>{record.scheduled_date ? new Date(record.scheduled_date).toLocaleDateString() : '-'}</TableCell>
+              <TableCell>
+                <MaintenanceActions
+                  record={record}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                  onStatusChange={onStatusChange}
+                  loading={loading}
+                />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
