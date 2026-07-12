@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Box, CircularProgress, Alert, Typography } from '@mui/material'
 import { useMaintenance } from '../../hooks/useMaintenance'
 import { MaintenanceTable } from '../../components/maintenance/MaintenanceTable'
 
 export const MaintenanceListPage = () => {
+  const navigate = useNavigate()
   const { maintenance, loading, error, fetchMaintenance, updateMaintenance, deleteMaintenance } = useMaintenance()
 
   useEffect(() => {
@@ -11,8 +13,7 @@ export const MaintenanceListPage = () => {
   }, [fetchMaintenance])
 
   const handleEdit = (record) => {
-    // Edit handler - can be extended for navigation or modal
-    console.log('Edit record:', record)
+    navigate(`/maintenance/${record.id}/edit`)
   }
 
   const handleDelete = async (id) => {

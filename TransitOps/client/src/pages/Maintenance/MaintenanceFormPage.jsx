@@ -1,23 +1,37 @@
 import { useState, useEffect, useRef } from 'react'
+import { useParams } from 'react-router-dom'
 import { Box, Alert, Typography, Button } from '@mui/material'
 import { useMaintenance } from '../../hooks/useMaintenance'
 import { MaintenanceForm } from '../../components/maintenance/MaintenanceForm'
 
-export const MaintenanceFormPage = ({ initialData = null }) => {
-  const { createMaintenance, updateMaintenance, loading: hookLoading } = useMaintenance()
+export const MaintenanceFormPage = () => {
+  const { id } = useParams()
+  const { createMaintenance, updateMaintenance, fetchMaintenanceById, loading: hookLoading } = useMaintenance()
   const [submitting, setSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
+  const [initialData, setInitialData] = useState(null)
 
   const initializedRef = useRef(false)
 
   useEffect(() => {
-    if (initialData && !initializedRef.current) {
+    if (id && !initializedRef.current) {
       initializedRef.current = true
       setIsEditing(true)
+      const loadData = async () => {
+        try {
+          const data = await fetchMaintenanceById(id)
+          setInitialData(data)
+        } catch (err) {
+          setError(err.message || 'Failed to load maintenance record')
+        }
+      }
+      loadData()
+    } else if (!id) {
+      initializedRef.current = false
     }
-  }, [initialData])
+  }, [id, fetchMaintenanceById])
 
   const handleSubmit = async (formData) => {
     setSubmitting(true)
