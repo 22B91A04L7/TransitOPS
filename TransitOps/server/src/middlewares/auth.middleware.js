@@ -11,7 +11,7 @@ export const authenticateJWT = (req, res, next) => {
     }
 
     try {
-        const decoded = verifyAccessToken(token, env.JWT_SECRET)
+        const decoded = verifyAccessToken(token)
         req.user = decoded
         next()
     } catch (error) {
