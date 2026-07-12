@@ -3,6 +3,7 @@ import express from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import healthRouter from './routes/health.routes.js'
+import maintenanceRouter from './routes/maintenance.routes.js'
 import { sendFailure } from './utils/apiResponse.js'
 import authRoutes from './modules/auth/auth.routes.js'
 import vehicleRoutes from './modules/vehicles/vehicle.routes.js'
@@ -17,10 +18,6 @@ app.use(express.json())
 app.use(morgan('dev'))
 
 app.use('/api/v1', healthRouter)
-app.use('/api/v1/auth', authRoutes)
-app.use('/api/v1/vehicles', vehicleRoutes)
-app.use('/api/v1/dashboard', dashboardRoutes)
-app.use('/api/v1/settings', settingsRoutes)
 
 app.use((req, res) => {
     return sendFailure(res, 'Route not found', 404)
